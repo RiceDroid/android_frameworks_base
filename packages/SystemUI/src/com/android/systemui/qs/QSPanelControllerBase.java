@@ -22,8 +22,14 @@ import static com.android.systemui.qs.dagger.QSFragmentModule.QS_USING_MEDIA_PLA
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.res.Configuration;
 import android.metrics.LogMaker;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.view.View;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -110,6 +116,22 @@ public abstract class QSPanelControllerBase<T extends QSPanel> extends ViewContr
     @Nullable
     private Runnable mUsingHorizontalLayoutChangedListener;
 
+    private final class ArcanaSettingsObserver extends ContentObserver {
+        public ArcanaSettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            if (mView.getTileLayout() != null) {
+                mView.getTileLayout().updateSettings();
+                setTiles();
+            }
+        }
+    }
+
+    private ArcanaSettingsObserver mArcanaSettingsObserver;
+
     protected QSPanelControllerBase(
             T view,
             QSTileHost host,
@@ -166,6 +188,19 @@ public abstract class QSPanelControllerBase<T extends QSPanel> extends ViewContr
         switchTileLayout(true);
 
         mDumpManager.registerDumpable(mView.getDumpableTag(), this);
+        mArcanaSettingsObserver = new ArcanaSettingsObserver(new Handler());
+        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                Settings.System.QS_TILE_VERTICAL_LAYOUT),
+                false, mArcanaSettingsObserver, UserHandle.USER_ALL);
+        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                Settings.System.QS_LAYOUT_COLUMNS),
+                false, mArcanaSettingsObserver, UserHandle.USER_ALL);
+        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                Settings.System.QS_LAYOUT_COLUMNS_LANDSCAPE),
+                false, mArcanaSettingsObserver, UserHandle.USER_ALL);
+        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                Settings.System.QS_TILE_LABEL_HIDE),
+                false, mArcanaSettingsObserver, UserHandle.USER_ALL);
     }
 
     @Override

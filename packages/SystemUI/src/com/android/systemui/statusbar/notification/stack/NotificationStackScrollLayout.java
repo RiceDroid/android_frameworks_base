@@ -76,6 +76,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.graphics.ColorUtils;
 import com.android.internal.jank.InteractionJankMonitor;
 import com.android.internal.policy.SystemBarUtils;
+import com.android.internal.util.arcana.ArcanaUtils;
 import com.android.keyguard.KeyguardSliceView;
 import com.android.settingslib.Utils;
 import com.android.systemui.Dependency;
@@ -1033,6 +1034,7 @@ public class NotificationStackScrollLayout extends ViewGroup implements Dumpable
         mMinimumPaddings = res.getDimensionPixelSize(R.dimen.notification_side_paddings);
         mQsTilePadding = res.getDimensionPixelOffset(R.dimen.qs_tile_margin_horizontal);
         mQsTileColumns = res.getInteger(R.integer.quick_settings_num_columns);
+        mQsTileColumns = ArcanaUtils.getQSColumnsCount(mContext, mQsTileColumns);
         mSkinnyNotifsInLandscape = res.getBoolean(R.bool.config_skinnyNotifsInLandscape);
         mSidePaddings = mMinimumPaddings;  // Updated in onMeasure by updateSidePadding()
         mMinInteractionHeight = res.getDimensionPixelSize(
