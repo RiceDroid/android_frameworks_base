@@ -163,6 +163,21 @@ public class QuickQSPanel extends QSPanel implements TunerService.Tunable {
          }
     }
 
+    private void updateBrightnessSliderPosition() {
+        if (mBrightnessView == null) return;
+        removeView(mBrightnessView);
+        addView(mBrightnessView, mTop ? 0 : 1);
+        setBrightnessViewMargin(mTop);
+        if (mBrightnessRunnable != null) {
+            updateResources();
+            mBrightnessRunnable.run();
+        }
+    }
+
+    public void setBrightnessRunnable(Runnable runnable) {
+        mBrightnessRunnable = runnable;
+    }
+
     public int getNumQuickTiles() {
         return mMaxTiles;
     }
