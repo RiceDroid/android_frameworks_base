@@ -180,14 +180,14 @@
     <style name="TextAppearance.QS.Status">
         <item name="android:fontFamily">@*android:string/config_bodyFontFamilyMedium</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:lineHeight">20sp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineHeight">18sp</item>
     </style>
     
     <style name="TextAppearance.QS.CustomClock">
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:lineHeight">20sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">27sp</item>
+        <item name="android:lineHeight">29sp</item>
     </style>
 
     <style name="TextAppearance.QS.SecurityFooter" parent="@style/TextAppearance.QS.Status">
