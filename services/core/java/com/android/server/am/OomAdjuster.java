@@ -1757,7 +1757,8 @@ public class OomAdjuster {
                 procState = PROCESS_STATE_IMPORTANT_FOREGROUND;
                 state.setCached(false);
                 state.setAdjType("has-overlay-ui");
-                schedGroup = ProcessList.SCHED_GROUP_DEFAULT;
+                //schedGroup = ProcessList.SCHED_GROUP_DEFAULT;
+                schedGroup = ProcessList.SCHED_GROUP_TOP_APP;
                 if (DEBUG_OOM_ADJ_REASON || logUid == appUid) {
                     reportOomAdjMessageLocked(TAG_OOM_ADJ, "Raise to overlay ui: " + app);
                 }
@@ -2876,7 +2877,7 @@ public class OomAdjuster {
                 // is not ready when attaching.
                 app.getWindowProcessController().onTopProcChanged();
                 setThreadPriority(app.getPid(), THREAD_PRIORITY_TOP_APP_BOOST);
-                initialSchedGroup = ProcessList.SCHED_GROUP_TOP_APP;
+                initialSchedGroup = ProcessList.SCHED_GROUP_DEFAULT;
             } catch (Exception e) {
                 Slog.w(TAG, "Failed to pre-set top priority to " + app + " " + e);
             }
